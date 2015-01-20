@@ -1,6 +1,6 @@
 #include "modbusd.h"
 #include "uip.h"
-//#include "common.h"
+#include "common.h"
 
 #include <stdbool.h>
 #include <string.h>
@@ -8,7 +8,7 @@
 //#define REG_COUNT 128
 unsigned char modRegisters[REG_COUNT];//These are the modbus registers where control data is stored
 
-struct MODBUS_HEADER_FIELDS{
+struct MODBUS_HEADER_MSG{
 	unsigned short transID;
 	unsigned short protoID;
 	unsigned short length;
@@ -16,24 +16,44 @@ struct MODBUS_HEADER_FIELDS{
 	unsigned char fcnID;
 	unsigned short offset;
 	unsigned short size;
-};
+	unsigned char data[128];
+}*request,*wResponse;
 
-union MODBUS_HEADER{
-	unsigned char bytes[12];
-	struct MODBUS_HEADER_FIELDS fields;
-}request;
+struct MODBUS_HEADER_RD{
+	unsigned short transID;
+	unsigned short protoID;
+	unsigned short length;
+	unsigned char unitID;
+	unsigned char fcnID;
+	unsigned char size;
+	unsigned char data[128];
+}*rResponse;
 
-#define CONFIG_NOT_USED		0
-#define CONFIG_INPUT		1
-#define CONFIG_OUTPUT		2
+struct MODBUS_HEADER_ERR{
+	unsigned short transID;
+	unsigned short protoID;
+	unsigned short length;
+	unsigned char unitID;
+	unsigned char fcnID;
+	unsigned char error;
+	unsigned char errorID;
+}*error;
 
-#define FILE_ROOT		1
+struct MODBUS_HEADER_MSG23{
+	unsigned short transID;
+	unsigned short protoID;
+	unsigned short length;
+	unsigned char unitID;
+	unsigned char fcnID;
+	unsigned short readOffset;
+	unsigned short readSize;
+	unsigned short writeOffset;
+	unsigned short writeSize;
+	unsigned char byteCount;
+	unsigned char data[121];
+}*request23;
 
-#define TRANSFER_SIZE		200
-
-#define HEADER_SIZE	10
-
-#define DATA_BUF ((uint8_t*)(uip_appdata))
+#define DATA_BUF ((uint8_t*)(uip_appdata))//Stores the request
 
 void mobdusd_init(void) {
   uip_listen(HTONS(502));
@@ -48,7 +68,7 @@ void modbusd_appcall(void) {
 
   //2.
   struct modd_state *hs = (struct modd_state *)&(uip_conn->appstate);
-  uint8_t buf[150];
+  uint8_t buf[150];//Stores the outgoing response
 
   //3a If newly connected
   //keep
@@ -61,96 +81,84 @@ void modbusd_appcall(void) {
 	//3b Packet received
   } else if(uip_newdata()) {
     printf("New data\n");
+
 	//Copy request header
-	memcpy(request.bytes,DATA_BUF,12);//Get all data just in case
-    printf("Got get request\n");
+    request = (struct MODBUS_HEADER_MSG*)DATA_BUF;
+    wResponse = (struct MODBUS_HEADER_MSG*)buf;
+    rResponse = (struct MODBUS_HEADER_RD*)buf;
+    error = (struct MODBUS_HEADER_ERR*)buf;
+	//memcpy(buf,DATA_BUF,12);//Get all data just in case
+    printf("Got new request\n");
 
 	//Parse modbus header here
-	unsigned short offset = 0,size = 0;
-	memcpy(buf,request.bytes,12);
-	offset = (request.fields.offset >> 8)*2;
-	size = (request.fields.size >> 8)*2;
+	unsigned short offset,size,wOffset,wSize;
+	memcpy(buf,DATA_BUF,12);//Copy the header to the out buffer.
+	offset = HTONS(request->offset)*2;//NTOHS(request.fields.offset)*2;
+	size = HTONS(request->size)*2;//NTOHS(request.fields.size)*2;
 
-  switch(request.fields.fcnID){
+  switch(request->fcnID){
 	case 3://Read multiple registers TESTED works
 		printf("3\n");
 		if(size + offset > REG_COUNT){//Send error here
-			buf[9] = 2;//Error data out of range
-			buf[8] = 0x83;//Give error
-			buf[5] = 4;
+			error->error = 0x83;
+			error->errorID = 2;
+			error->length = HTONS(4);
 			hs->xmit_buf_size = 10;
 		}else{//send data
-			memcpy(buf + 9,&modRegisters[offset],size);
-			buf[8] = size;
-			buf[5] = 3 + size;
+			memcpy(rResponse->data,&modRegisters[offset],size);
+			rResponse->length = HTONS(3 + size);
+			rResponse->size = size;
 			hs->xmit_buf_size = 9 + size;
-		}
-		break;
-	case 4:///Read Single register UNTESTED Probably works
-		printf("4\n");
-		memcpy(buf,request.bytes,8);
-		//size = 2;
-		buf[8] = 2;//Set response size
-		if(offset > REG_COUNT){
-			buf[8] = 0x84;//Give error
-			buf[9] = 2;//Error data out of range
-			buf[5] = 4;
-			hs->xmit_buf_size = 10;
-		}else{
-			memcpy(&buf[9],&modRegisters[offset],2);
-			buf[5] = 5;
-			hs->xmit_buf_size = 11;
 		}
 		break;
 	case 6://Write single register UNTESTED Probably works
 		printf("6\n");
-		//memcpy(buf,request.bytes,8);
 		if(offset > REG_COUNT){
-			buf[8] = 0x86;
-			buf[9] = 2; //Error Data out of range
-			buf[5] = 4;
+			error->error = 0x86;
+			error->errorID = 2;
+			error->length = HTONS(4);
 			hs->xmit_buf_size = 10;
 		}else{
-			memcpy(&modRegisters[offset],(const void *)&DATA_BUF[10],2);
+			memcpy(&modRegisters[offset],&request->size,2);//data is stored in size heres
 			hs->xmit_buf_size = 12;
 		}
 		break;
-
 	case 16://Write multiple registers TESTED WORKS
 		printf("16\n");
 		if(size + offset > REG_COUNT){
-			buf[8] = 0x90;
-			buf[9] = 2; //Error Data out of range.
-			buf[5] = 4;
+			error->error = 0x90;
+			error->errorID = 2;
+			error->length = HTONS(4);
 			hs->xmit_buf_size = 10;
 		}else{
-			memcpy(modRegisters+offset,&DATA_BUF[13], size);
-			buf[5] = 6;
+			memcpy(modRegisters+offset,request->data+1, size);//Byte count is data[0]
+			wResponse->length = HTONS(6);
 			hs->xmit_buf_size = 12;
 		}
 		break;
 	case 23://Read and write UNTESTED
 		printf("23\n");
-		if(size + offset > REG_COUNT || (buf[13]*2 + buf[15]*2) > REG_COUNT){
-			buf[8] = 0x97;
-			buf[9] = 2;
-			buf[5] = 4;
+		request23 = (struct MODBUS_HEADER_MSG23*)DATA_BUF;
+		wSize = HTONS(request23->writeSize)*2;
+		wOffset = HTONS(request23->writeOffset)*2;
+		if(size + offset > REG_COUNT ||	(wOffset + wSize) > REG_COUNT){
+			error->error = 0x97;
+			error->errorID = 2;
+			error->length = HTONS(4);
 			hs->xmit_buf_size = 10;
 		}else{
-			memcpy(buf + 9,&modRegisters[offset],size);
-			buf[8] = size;
-			buf[5] = 3 + size;
-			hs->xmit_buf_size = 10 + size;
-			offset = buf[13]*2;
-			size = buf[15]*2;
-			memcpy(modRegisters+offset,&buf[17],size);
+			memcpy(rResponse->data,&modRegisters[offset],size);//Copy out bound data
+			rResponse->size = size;
+			rResponse->length = HTONS(3 + size);
+			hs->xmit_buf_size = 9 + size;
+			memcpy(&modRegisters[wOffset],request23->data,wSize);//Write local data
 		}
 		break;
 	default:
-		memcpy(buf,request.bytes,8);
-		buf[8] = 0x00;
-		buf[9] = 1;
-		buf[5] = 4;
+		//This is for all unsupported codes
+		error->error = 0x00;
+		error->errorID = 1;
+		error->length = HTONS(4);
 		hs->xmit_buf_size = 10;
 	}//Switch
 
@@ -171,7 +179,6 @@ void modbusd_appcall(void) {
 
   //4 Send the response here resend if the last packet failed
   if( uip_rexmit()) {
-    //printf("%p: Sending data (%d)\n", hs, hs->data_count);
 	uip_send(buf, hs->xmit_buf_size);	
-  }//if( uip_rexmit() || send_new_data )
+  }//if( uip_rexmit())
 }

@@ -38,94 +38,16 @@ void spi_mem_write(uint16_t addr, const uint8_t *buf, uint16_t count);
 
 void spi_mem_read(uint16_t addr, uint8_t *buf, uint16_t count);
 
+void startup();
+
 //This is your MAC ID set this to anything you want, maybe an old router.
 const uint8_t mac_addr[] = { 0x00, 0xC0, 0x033, 0x50, 0x48, 0x12 };
 
+long lPeriodicTimer, lARPTimer;
+
 int main(void) {
   //char buf[100];//not sure what this is for
-  static struct uip_eth_addr eth_addr;
-  uip_ipaddr_t ipaddr;
-
-  cpu_init();
-  uart_init();
-  printf("Welcome\n");
-  spi_init();
-  enc28j60_comm_init();
-  printf("Welcome\n");
-
-  enc_init(mac_addr);
-
-  //
-  // Configure SysTick for a periodic interrupt.
-  //
-  MAP_SysTickPeriodSet(MAP_SysCtlClockGet() / SYSTICKHZ);
-  MAP_SysTickEnable();
-  MAP_SysTickIntEnable();
-
-  /************get new interrupt********/
-  //MAP_IntEnable(INT_GPIOA);
-  MAP_IntEnable(INT_GPIOE);
-  MAP_IntMasterEnable();
-
-  MAP_SysCtlPeripheralClockGating(false);
-  printf("int enabled\n");
-
-  /*************get new interrupt********/
-  MAP_GPIOIntTypeSet(GPIO_PORTE_BASE, ENC_INT, GPIO_FALLING_EDGE);
-  MAP_GPIOPinIntClear(GPIO_PORTE_BASE, ENC_INT);
-  MAP_GPIOPinIntEnable(GPIO_PORTE_BASE, ENC_INT);
-
-  uip_init();
-
-  eth_addr.addr[0] = mac_addr[0];
-  eth_addr.addr[1] = mac_addr[1];
-  eth_addr.addr[2] = mac_addr[2];
-  eth_addr.addr[3] = mac_addr[3];
-  eth_addr.addr[4] = mac_addr[4];
-  eth_addr.addr[5] = mac_addr[5];
-
-  uip_setethaddr(eth_addr);
-
-#define DEFAULT_IPADDR0 10
-#define DEFAULT_IPADDR1 0
-#define DEFAULT_IPADDR2 0
-#define DEFAULT_IPADDR3 201
-
-#define DEFAULT_NETMASK0 255
-#define DEFAULT_NETMASK1 255
-#define DEFAULT_NETMASK2 255
-#define DEFAULT_NETMASK3 0
-
-#undef STATIC_IP
-
-#ifdef STATIC_IP
-  uip_ipaddr(ipaddr, DEFAULT_IPADDR0, DEFAULT_IPADDR1, DEFAULT_IPADDR2,
-	     DEFAULT_IPADDR3);
-  uip_sethostaddr(ipaddr);
-  printf("IP: %d.%d.%d.%d\n", DEFAULT_IPADDR0, DEFAULT_IPADDR1,
-	     DEFAULT_IPADDR2, DEFAULT_IPADDR3);
-  uip_ipaddr(ipaddr, DEFAULT_NETMASK0, DEFAULT_NETMASK1, DEFAULT_NETMASK2,
-	     DEFAULT_NETMASK3);
-  uip_setnetmask(ipaddr);
-#else
-  uip_ipaddr(ipaddr, 0, 0, 0, 0);
-  uip_sethostaddr(ipaddr);
-  printf("Waiting for IP address...\n");
-  uip_ipaddr(ipaddr, 0, 0, 0, 0);
-  uip_setnetmask(ipaddr);
-#endif
-
-  //httpd_init();
-  mobdusd_init();
-
-#ifndef STATIC_IP
-  dhcpc_init(mac_addr, 6);
-  dhcpc_request();
-#endif
-
-  long lPeriodicTimer, lARPTimer;
-  lPeriodicTimer = lARPTimer = 0;
-
+  startup();
 
   while(true) {
 
@@ -141,12 +63,13 @@ int main(void) {
      */
 
 
-
+    //Check if there is data waiting at the enc28j60
     if( HWREGBITW(&g_ulFlags, FLAG_ENC_INT) == 1 ) {
       HWREGBITW(&g_ulFlags, FLAG_ENC_INT) = 0;
       enc_action();
     }
 
+    //Check for systick update
     if(HWREGBITW(&g_ulFlags, FLAG_SYSTICK) == 1) {
       HWREGBITW(&g_ulFlags, FLAG_SYSTICK) = 0;
       lPeriodicTimer += SYSTICKMS;
@@ -183,7 +106,7 @@ int main(void) {
       lARPTimer = 0;
       uip_arp_timer();
     }
-  }
+  }//while(true)
 
   return 0;
 }
@@ -299,4 +222,91 @@ void spi_mem_read(uint16_t addr, uint8_t *buf, uint16_t count) {
 
 void uip_log(char *msg) {
   printf("UIP: %s\n", msg);
+}
+
+
+void startup()
+{
+	  static struct uip_eth_addr eth_addr;
+	  uip_ipaddr_t ipaddr;
+
+	  cpu_init();
+	  uart_init();
+	  printf("Welcome\n");
+	  spi_init();
+	  enc28j60_comm_init();
+	  printf("Welcome\n");
+
+	  enc_init(mac_addr);
+
+	  //
+	  // Configure SysTick for a periodic interrupt.
+	  //
+	  MAP_SysTickPeriodSet(MAP_SysCtlClockGet() / SYSTICKHZ);
+	  MAP_SysTickEnable();
+	  MAP_SysTickIntEnable();
+
+	  /************get new interrupt********/
+	  //MAP_IntEnable(INT_GPIOA);
+	  MAP_IntEnable(INT_GPIOE);
+	  MAP_IntMasterEnable();
+
+	  MAP_SysCtlPeripheralClockGating(false);
+	  printf("int enabled\n");
+
+	  /*************get new interrupt********/
+	  MAP_GPIOIntTypeSet(GPIO_PORTE_BASE, ENC_INT, GPIO_FALLING_EDGE);
+	  MAP_GPIOPinIntClear(GPIO_PORTE_BASE, ENC_INT);
+	  MAP_GPIOPinIntEnable(GPIO_PORTE_BASE, ENC_INT);
+
+	  uip_init();
+
+	  eth_addr.addr[0] = mac_addr[0];
+	  eth_addr.addr[1] = mac_addr[1];
+	  eth_addr.addr[2] = mac_addr[2];
+	  eth_addr.addr[3] = mac_addr[3];
+	  eth_addr.addr[4] = mac_addr[4];
+	  eth_addr.addr[5] = mac_addr[5];
+
+	  uip_setethaddr(eth_addr);
+
+	#define DEFAULT_IPADDR0 10
+	#define DEFAULT_IPADDR1 0
+	#define DEFAULT_IPADDR2 0
+	#define DEFAULT_IPADDR3 201
+
+	#define DEFAULT_NETMASK0 255
+	#define DEFAULT_NETMASK1 255
+	#define DEFAULT_NETMASK2 255
+	#define DEFAULT_NETMASK3 0
+
+	#undef STATIC_IP
+
+	#ifdef STATIC_IP
+	  uip_ipaddr(ipaddr, DEFAULT_IPADDR0, DEFAULT_IPADDR1, DEFAULT_IPADDR2,
+		     DEFAULT_IPADDR3);
+	  uip_sethostaddr(ipaddr);
+	  printf("IP: %d.%d.%d.%d\n", DEFAULT_IPADDR0, DEFAULT_IPADDR1,
+		     DEFAULT_IPADDR2, DEFAULT_IPADDR3);
+	  uip_ipaddr(ipaddr, DEFAULT_NETMASK0, DEFAULT_NETMASK1, DEFAULT_NETMASK2,
+		     DEFAULT_NETMASK3);
+	  uip_setnetmask(ipaddr);
+	#else
+	  uip_ipaddr(ipaddr, 0, 0, 0, 0);
+	  uip_sethostaddr(ipaddr);
+	  printf("Waiting for IP address...\n");
+	  uip_ipaddr(ipaddr, 0, 0, 0, 0);
+	  uip_setnetmask(ipaddr);
+	#endif
+
+	  //httpd_init();
+	  mobdusd_init();
+
+	#ifndef STATIC_IP
+	  dhcpc_init(mac_addr, 6);
+	  dhcpc_request();
+	#endif
+
+	  lPeriodicTimer = lARPTimer = 0;
+
 }
