@@ -22,7 +22,6 @@ $(GEN_CMDS__FLAG) \
 "./startup_ccs.obj" \
 "./modbusd.obj" \
 "./main.obj" \
-"./httpd.obj" \
 "./enc28j60.obj" \
 "../lm4f120h5qr.cmd" \
 -l"libc.a" \
@@ -146,8 +145,8 @@ enc28j60-booster-example.out: $(OBJS) $(LD_SRCS) $(CMD_SRCS) $(GEN_CMDS)
 # Other Targets
 clean:
 	-$(RM) $(TMS470_EXECUTABLE_OUTPUTS__QUOTED) "enc28j60-booster-example.out"
-	-$(RM) "enc28j60.pp" "httpd.pp" "main.pp" "modbusd.pp" "startup_ccs.pp" "utils\uartstdio.pp" "uip-1.0\uip\psock.pp" "uip-1.0\uip\uip-fw.pp" "uip-1.0\uip\uip-neighbor.pp" "uip-1.0\uip\uip-split.pp" "uip-1.0\uip\uip.pp" "uip-1.0\uip\uip_arp.pp" "uip-1.0\uip\uip_timer.pp" "uip-1.0\uip\uiplib.pp" "uip-1.0\lib\memb.pp" "uip-1.0\apps\dhcpc\dhcpc.pp" 
-	-$(RM) "enc28j60.obj" "httpd.obj" "main.obj" "modbusd.obj" "startup_ccs.obj" "utils\uartstdio.obj" "uip-1.0\uip\psock.obj" "uip-1.0\uip\uip-fw.obj" "uip-1.0\uip\uip-neighbor.obj" "uip-1.0\uip\uip-split.obj" "uip-1.0\uip\uip.obj" "uip-1.0\uip\uip_arp.obj" "uip-1.0\uip\uip_timer.obj" "uip-1.0\uip\uiplib.obj" "uip-1.0\lib\memb.obj" "uip-1.0\apps\dhcpc\dhcpc.obj" 
+	-$(RM) "enc28j60.pp" "main.pp" "modbusd.pp" "startup_ccs.pp" "utils\uartstdio.pp" "uip-1.0\uip\psock.pp" "uip-1.0\uip\uip-fw.pp" "uip-1.0\uip\uip-neighbor.pp" "uip-1.0\uip\uip-split.pp" "uip-1.0\uip\uip.pp" "uip-1.0\uip\uip_arp.pp" "uip-1.0\uip\uip_timer.pp" "uip-1.0\uip\uiplib.pp" "uip-1.0\lib\memb.pp" "uip-1.0\apps\dhcpc\dhcpc.pp" 
+	-$(RM) "enc28j60.obj" "main.obj" "modbusd.obj" "startup_ccs.obj" "utils\uartstdio.obj" "uip-1.0\uip\psock.obj" "uip-1.0\uip\uip-fw.obj" "uip-1.0\uip\uip-neighbor.obj" "uip-1.0\uip\uip-split.obj" "uip-1.0\uip\uip.obj" "uip-1.0\uip\uip_arp.obj" "uip-1.0\uip\uip_timer.obj" "uip-1.0\uip\uiplib.obj" "uip-1.0\lib\memb.obj" "uip-1.0\apps\dhcpc\dhcpc.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

@@ -225,7 +225,7 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="link.ld|bootlink.ld|uip-1.0/unix|uip-1.0/apps/telnetd|uip-1.0/apps/webclient|uip-1.0/apps/webserver|uip-1.0/apps/smtp|uip-1.0/apps/resolv|uip-1.0/apps/httpd|uip-1.0/apps/hello-world|uip-1.0/doc|startup_gcc.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="httpd.c|link.ld|bootlink.ld|uip-1.0/unix|uip-1.0/apps/telnetd|uip-1.0/apps/webclient|uip-1.0/apps/webserver|uip-1.0/apps/smtp|uip-1.0/apps/resolv|uip-1.0/apps/httpd|uip-1.0/apps/hello-world|uip-1.0/doc|startup_gcc.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

@@ -1,34 +1,34 @@
 ******************************************************************************
                   TI ARM Linker PC v5.1.1                      
 ******************************************************************************
->> Linked Mon Sep 29 18:17:02 2014
+>> Linked Sun Jan 25 13:09:55 2015
 
 OUTPUT FILE NAME:   <enc28j60-booster-example.out>
-ENTRY POINT SYMBOL: "_c_int00"  address: 00006c59
+ENTRY POINT SYMBOL: "_c_int00"  address: 0000450d
 
 
 MEMORY CONFIGURATION
 
          name            origin    length      used     unused   attr    fill
 ----------------------  --------  ---------  --------  --------  ----  --------
-  FLASH                 00000000   00040000  00007182  00038e7e  R  X
-  SRAM                  20000000   00008000  00001b73  0000648d  RW X
+  FLASH                 00000000   00040000  00004730  0003b8d0  R  X
+  SRAM                  20000000   00008000  0000161b  000069e5  RW X
 
 
 SEGMENT ALLOCATION MAP
 
 run origin  load origin   length   init length attrs members
 ----------  ----------- ---------- ----------- ----- -------
-00000000    00000000    00007188   00007188    r-x
+00000000    00000000    00004738   00004738    r-x
   00000000    00000000    0000026c   0000026c    r-- .intvecs
-  0000026c    0000026c    00006d18   00006d18    r-x .text
-  00006f84    00006f84    0000015e   0000015e    r-- .const
-  000070e8    000070e8    000000a0   000000a0    r-- .cinit
-20000000    20000000    00001b78   00000000    rw-
-  20000000    20000000    00000f8b   00000000    rw- .bss
-  20000f90    20000f90    000007d0   00000000    rw- .sysmem
-  20001760    20001760    00000218   00000000    rw- .data
-  20001978    20001978    00000200   00000000    rw- .stack
+  0000026c    0000026c    00004432   00004432    r-x .text
+  000046a0    000046a0    0000005a   0000005a    r-- .const
+  00004700    00004700    00000038   00000038    r-- .cinit
+20000000    20000000    00001620   00000000    rw-
+  20000000    20000000    00000c13   00000000    rw- .bss
+  20000c18    20000c18    000007d0   00000000    rw- .sysmem
+  200013e8    200013e8    00000200   00000000    rw- .stack
+  200015e8    200015e8    00000038   00000000    rw- .data
 
 
 SECTION ALLOCATION MAP
@@ -39,160 +39,123 @@ section   page    origin      length       input sections
 .intvecs   0    00000000    0000026c     
                   00000000    0000026c     startup_ccs.obj (.intvecs)
 
-.text      0    0000026c    00006d18     
+.text      0    0000026c    00004432     
                   0000026c    00001904     uip.obj (.text)
-                  00001b70    00000e8c     rtsv7M4_T_le_v4SPD16_eabi.lib : _printfi.obj (.text)
-                  000029fc    00000990     enc28j60.obj (.text)
-                  0000338c    00000918     uartstdio.obj (.text)
-                  00003ca4    000006fc     main.obj (.text)
-                  000043a0    0000053c     dhcpc.obj (.text)
-                  000048dc    000004a4     uip_arp.obj (.text)
-                  00004d80    000003cc     rtsv7M4_T_le_v4SPD16_eabi.lib : memory.obj (.text)
-                  0000514c    000003a8     modbusd.obj (.text)
-                  000054f4    00000310     rtsv7M4_T_le_v4SPD16_eabi.lib : lowlev.obj (.text)
-                  00005804    000002d4                                   : trgdrv.obj (.text)
-                  00005ad8    000001f4                                   : ull_div_t2.obj (.text)
-                  00005ccc    000001c0                                   : fopen.obj (.text)
-                  00005e8c    000001b6                                   : fd_add_t2.obj (.text)
-                  00006042    00000136                                   : fd_div_t2.obj (.text)
-                  00006178    00000134                                   : fputs.obj (.text)
-                  000062ac    000000fc                                   : fd_mul_t2.obj (.text)
-                  000063a8    000000dc                                   : setvbuf.obj (.text)
-                  00006484    000000c0                                   : fflush.obj (.text)
-                  00006544    000000ac                                   : _io_perm.obj (.text)
-                  000065f0    0000009c                                   : fputc.obj (.text)
-                  0000668c    0000009c                                   : memcpy_t2.obj (.text)
-                  00006728    00000098                                   : fclose.obj (.text)
-                  000067c0    00000094                                   : auto_init.obj (.text)
-                  00006854    0000007e                                   : fd_cmp_t2.obj (.text:__aeabi_cdcmple)
-                  000068d2    0000007e                                   : fd_cmp_t2.obj (.text:__aeabi_cdrcmple)
-                  00006950    00000078                                   : memset_t2.obj (.text)
-                  000069c8    00000070                                   : printf.obj (.text)
-                  00006a38    00000064                                   : fseek.obj (.text)
-                  00006a9c    00000060                                   : trgmsg.obj (.text)
-                  00006afc    0000005e                                   : copy_decompress_rle.obj (.text)
-                  00006b5a    0000005a                                   : ltoa.obj (.text)
-                  00006bb4    00000058     uip_timer.obj (.text)
-                  00006c0c    0000004c     rtsv7M4_T_le_v4SPD16_eabi.lib : atoi.obj (.text)
-                  00006c58    00000048                                   : boot.obj (.text)
-                  00006ca0    00000048                                   : fd_toi_t2.obj (.text)
-                  00006ce8    00000044                                   : cpy_tbl.obj (.text)
-                  00006d2c    00000044                                   : exit.obj (.text)
-                  00006d70    00000044                                   : xdtest.obj (.text)
-                  00006db4    00000042                                   : u_divt2.obj (.text)
-                  00006df6    00000030                                   : strncpy.obj (.text)
-                  00006e26    0000002e                                   : i_tofd_t2.obj (.text)
-                  00006e54    00000022                                   : memcmp.obj (.text)
-                  00006e76    0000001c                                   : memccpy.obj (.text)
-                  00006e92    00000002     --HOLE-- [fill = 0]
-                  00006e94    00000018                                   : args_main.obj (.text)
-                  00006eac    00000018                                   : ll_mul_t2.obj (.text)
-                  00006ec4    00000018                                   : strcmp.obj (.text)
-                  00006edc    00000016                                   : memchr.obj (.text)
-                  00006ef2    00000016                                   : strchr.obj (.text)
-                  00006f08    00000014                                   : _lock.obj (.text)
-                  00006f1c    00000014                                   : strlen.obj (.text)
-                  00006f30    00000012                                   : copy_zero_init.obj (.text:decompress:ZI)
-                  00006f42    00000012                                   : xdclass.obj (.text)
-                  00006f54    00000010                                   : strcpy.obj (.text)
-                  00006f64    0000000e                                   : copy_decompress_none.obj (.text:decompress:none)
-                  00006f72    0000000c     startup_ccs.obj (.text)
-                  00006f7e    00000006     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_decompress_rle.obj (.text:decompress:rle24)
+                  00001b70    00000990     enc28j60.obj (.text)
+                  00002500    00000918     uartstdio.obj (.text)
+                  00002e18    0000072c     main.obj (.text)
+                  00003544    0000053c     dhcpc.obj (.text)
+                  00003a80    000004a4     uip_arp.obj (.text)
+                  00003f24    00000388     modbusd.obj (.text)
+                  000042ac    0000009c     rtsv7M4_T_le_v4SPD16_eabi.lib : memcpy_t2.obj (.text)
+                  00004348    00000094                                   : auto_init.obj (.text)
+                  000043dc    00000078                                   : memset_t2.obj (.text)
+                  00004454    0000005e                                   : copy_decompress_rle.obj (.text)
+                  000044b2    00000058     uip_timer.obj (.text)
+                  0000450a    00000002     --HOLE-- [fill = 0]
+                  0000450c    00000048     rtsv7M4_T_le_v4SPD16_eabi.lib : boot.obj (.text)
+                  00004554    00000044                                   : cpy_tbl.obj (.text)
+                  00004598    00000044                                   : exit.obj (.text)
+                  000045dc    00000042                                   : u_divt2.obj (.text)
+                  0000461e    00000022                                   : memcmp.obj (.text)
+                  00004640    00000018                                   : args_main.obj (.text)
+                  00004658    00000014                                   : _lock.obj (.text)
+                  0000466c    00000012                                   : copy_zero_init.obj (.text:decompress:ZI)
+                  0000467e    0000000e                                   : copy_decompress_none.obj (.text:decompress:none)
+                  0000468c    0000000c     startup_ccs.obj (.text)
+                  00004698    00000006     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_decompress_rle.obj (.text:decompress:rle24)
 
-.const     0    00006f84    0000015e     
-                  00006f84    00000102     rtsv7M4_T_le_v4SPD16_eabi.lib : ctype.obj (.const:.string:_ctypes_)
-                  00007086    00000002     --HOLE-- [fill = 0]
-                  00007088    00000028     uartstdio.obj (.const)
-                  000070b0    00000012     uartstdio.obj (.const:.string)
-                  000070c2    0000000a     uip_arp.obj (.const)
-                  000070cc    00000008     dhcpc.obj (.const:.string)
-                  000070d4    00000008     uip.obj (.const)
-                  000070dc    00000006     main.obj (.const:.string)
+.const     0    000046a0    0000005a     
+                  000046a0    00000028     uartstdio.obj (.const)
+                  000046c8    00000012     uartstdio.obj (.const:.string)
+                  000046da    0000000a     uip_arp.obj (.const)
+                  000046e4    00000008     dhcpc.obj (.const:.string)
+                  000046ec    00000008     uip.obj (.const)
+                  000046f4    00000006     main.obj (.const:.string)
 
-.cinit     0    000070e8    000000a0     
-                  000070e8    00000078     (.cinit..data.load) [load image, compression = rle]
-                  00007160    0000000c     (__TI_handler_table)
-                  0000716c    00000004     --HOLE-- [fill = 0]
-                  00007170    00000008     (.cinit..bss.load) [load image, compression = zero_init]
-                  00007178    00000010     (__TI_cinit_table)
+.cinit     0    00004700    00000038     
+                  00004700    00000012     (.cinit..data.load) [load image, compression = rle]
+                  00004712    00000002     --HOLE-- [fill = 0]
+                  00004714    0000000c     (__TI_handler_table)
+                  00004720    00000008     (.cinit..bss.load) [load image, compression = zero_init]
+                  00004728    00000010     (__TI_cinit_table)
 
-.bss       0    20000000    00000f8b     UNINITIALIZED
-                  20000000    00000644     uip.obj (.bss:uip_buf)
-                  20000644    00000400     uartstdio.obj (.bss:g_pcUARTTxBuffer)
-                  20000a44    00000120     rtsv7M4_T_le_v4SPD16_eabi.lib : trgmsg.obj (.bss:__CIOBUF_)
-                  20000b64    00000100     uip.obj (.bss:uip_udp_conns)
-                  20000c64    000000a0     rtsv7M4_T_le_v4SPD16_eabi.lib : defs.obj (.bss:__TI_tmpnams)
-                  20000d04    00000080     uartstdio.obj (.bss:g_pcUARTRxBuffer)
-                  20000d84    00000080     modbusd.obj (.bss:modRegisters)
-                  20000e04    00000060     uip_arp.obj (.bss:arp_table)
-                  20000e64    00000058     uip.obj (.bss:uip_conns)
-                  20000ebc    00000034     dhcpc.obj (.bss:s)
-                  20000ef0    00000034     uip.obj (.bss:uip_stat)
-                  20000f24    0000000c     (.common:request)
-                  20000f30    00000008     (.common:parmbuf)
-                  20000f38    00000008     (.common:uip_listenports)
-                  20000f40    00000006     (.common:eth_addr$1)
-                  20000f46    00000002     (.common:enc_next_packet)
-                  20000f48    00000004     (.common:g_ulFlags)
-                  20000f4c    00000004     (.common:g_ulPortNum)
-                  20000f50    00000004     (.common:ipaddr)
-                  20000f54    00000004     (.common:iss)
-                  20000f58    00000004     (.common:uip_acc32)
-                  20000f5c    00000004     (.common:uip_appdata)
-                  20000f60    00000004     (.common:uip_conn)
-                  20000f64    00000004     (.common:uip_draddr)
-                  20000f68    00000004     (.common:uip_hostaddr)
-                  20000f6c    00000004     (.common:uip_netmask)
-                  20000f70    00000004     (.common:uip_sappdata)
-                  20000f74    00000004     (.common:uip_udp_conn)
-                  20000f78    00000002     (.common:ipid)
-                  20000f7a    00000002     (.common:lastport)
-                  20000f7c    00000002     (.common:tmp16)
-                  20000f7e    00000002     (.common:uip_len)
-                  20000f80    00000002     (.common:uip_slen)
-                  20000f82    00000001     (.common:arptime)
-                  20000f83    00000001     (.common:c)
-                  20000f84    00000001     (.common:c)
-                  20000f85    00000001     (.common:enc_current_bank)
-                  20000f86    00000001     (.common:g_bDisableEcho)
-                  20000f87    00000001     (.common:i)
-                  20000f88    00000001     (.common:opt)
-                  20000f89    00000001     (.common:tmpage)
-                  20000f8a    00000001     (.common:uip_flags)
+.bss       0    20000000    00000c13     UNINITIALIZED
+                  20000000    00000400     uartstdio.obj (.bss:g_pcUARTTxBuffer)
+                  20000400    000003ec     uip.obj (.bss:uip_buf)
+                  200007ec    00000100     uip.obj (.bss:uip_udp_conns)
+                  200008ec    00000098     modbusd.obj (.bss:buf)
+                  20000984    00000080     uartstdio.obj (.bss:g_pcUARTRxBuffer)
+                  20000a04    00000080     modbusd.obj (.bss:modRegisters)
+                  20000a84    00000060     uip_arp.obj (.bss:arp_table)
+                  20000ae4    00000058     uip.obj (.bss:uip_conns)
+                  20000b3c    00000034     dhcpc.obj (.bss:s)
+                  20000b70    00000034     uip.obj (.bss:uip_stat)
+                  20000ba4    00000008     (.common:uip_listenports)
+                  20000bac    00000006     (.common:eth_addr$1)
+                  20000bb2    00000002     (.common:enc_next_packet)
+                  20000bb4    00000004     (.common:error)
+                  20000bb8    00000004     (.common:g_ulFlags)
+                  20000bbc    00000004     (.common:g_ulPortNum)
+                  20000bc0    00000004     (.common:ipaddr)
+                  20000bc4    00000004     (.common:iss)
+                  20000bc8    00000004     (.common:lARPTimer)
+                  20000bcc    00000004     (.common:lPeriodicTimer)
+                  20000bd0    00000004     (.common:rResponse)
+                  20000bd4    00000004     (.common:request)
+                  20000bd8    00000004     (.common:request23)
+                  20000bdc    00000004     (.common:uip_acc32)
+                  20000be0    00000004     (.common:uip_appdata)
+                  20000be4    00000004     (.common:uip_conn)
+                  20000be8    00000004     (.common:uip_draddr)
+                  20000bec    00000004     (.common:uip_hostaddr)
+                  20000bf0    00000004     (.common:uip_netmask)
+                  20000bf4    00000004     (.common:uip_sappdata)
+                  20000bf8    00000004     (.common:uip_udp_conn)
+                  20000bfc    00000004     (.common:wResponse)
+                  20000c00    00000002     (.common:ipid)
+                  20000c02    00000002     (.common:lastport)
+                  20000c04    00000002     (.common:tmp16)
+                  20000c06    00000002     (.common:uip_len)
+                  20000c08    00000002     (.common:uip_slen)
+                  20000c0a    00000001     (.common:arptime)
+                  20000c0b    00000001     (.common:c)
+                  20000c0c    00000001     (.common:c)
+                  20000c0d    00000001     (.common:enc_current_bank)
+                  20000c0e    00000001     (.common:g_bDisableEcho)
+                  20000c0f    00000001     (.common:i)
+                  20000c10    00000001     (.common:opt)
+                  20000c11    00000001     (.common:tmpage)
+                  20000c12    00000001     (.common:uip_flags)
 
-.sysmem    0    20000f90    000007d0     UNINITIALIZED
-                  20000f90    00000008     rtsv7M4_T_le_v4SPD16_eabi.lib : memory.obj (.sysmem)
-                  20000f98    000007c8     --HOLE--
+.sysmem    0    20000c18    000007d0     UNINITIALIZED
+                  20000c18    00000008     rtsv7M4_T_le_v4SPD16_eabi.lib : memory.obj (.sysmem)
+                  20000c20    000007c8     --HOLE--
 
-.data      0    20001760    00000218     UNINITIALIZED
-                  20001760    000000f0     rtsv7M4_T_le_v4SPD16_eabi.lib : defs.obj (.data:_ftable)
-                  20001850    000000d0                                   : lowlev.obj (.data)
-                  20001920    00000015     uartstdio.obj (.data)
-                  20001935    00000003     --HOLE--
-                  20001938    00000010     rtsv7M4_T_le_v4SPD16_eabi.lib : defs.obj (.data)
-                  20001948    0000000c                                   : memory.obj (.data)
-                  20001954    00000008                                   : _lock.obj (.data)
-                  2000195c    00000008                                   : exit.obj (.data)
-                  20001964    00000006     uip.obj (.data)
-                  2000196a    00000002     --HOLE--
-                  2000196c    00000004     main.obj (.data)
-                  20001970    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : fopen.obj (.data)
-                  20001974    00000004                                   : stkdepth_vars.obj (.data)
+.stack     0    200013e8    00000200     UNINITIALIZED
+                  200013e8    00000200     --HOLE--
 
-.stack     0    20001978    00000200     UNINITIALIZED
-                  20001978    00000200     --HOLE--
+.data      0    200015e8    00000038     UNINITIALIZED
+                  200015e8    00000015     uartstdio.obj (.data)
+                  200015fd    00000003     --HOLE--
+                  20001600    00000008     rtsv7M4_T_le_v4SPD16_eabi.lib : _lock.obj (.data)
+                  20001608    00000008                                   : exit.obj (.data)
+                  20001610    00000006     uip.obj (.data)
+                  20001616    00000002     --HOLE--
+                  20001618    00000004     main.obj (.data)
+                  2000161c    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : stkdepth_vars.obj (.data)
 
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 00007178 records: 2, size/record: 8, table size: 16
-	.data: load addr=000070e8, load size=00000078 bytes, run addr=20001760, run size=00000218 bytes, compression=rle
-	.bss: load addr=00007170, load size=00000008 bytes, run addr=20000000, run size=00000f8b bytes, compression=zero_init
+__TI_cinit_table @ 00004728 records: 2, size/record: 8, table size: 16
+	.data: load addr=00004700, load size=00000012 bytes, run addr=200015e8, run size=00000038 bytes, compression=rle
+	.bss: load addr=00004720, load size=00000008 bytes, run addr=20000000, run size=00000c13 bytes, compression=zero_init
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 00007160 records: 3, size/record: 4, table size: 12
+__TI_handler_table @ 00004714 records: 3, size/record: 4, table size: 12
 	index: 0, handler: __TI_decompress_rle24
 	index: 1, handler: __TI_decompress_none
 	index: 2, handler: __TI_zero_init
@@ -202,209 +165,140 @@ GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name
 
 address    name
 --------   ----
-00006d2d   C$$EXIT
-00006ac7   C$$IO$$
-0000404d   GPIOPortEIntHandler
-00005a91   HOSTclock
-00005a59   HOSTclose
-00005a1b   HOSTgetenv
-000059bf   HOSTlseek
-0000596d   HOSTopen
-00005921   HOSTread
-000058c3   HOSTrename
-00005889   HOSTtime
-00005851   HOSTunlink
-00005805   HOSTwrite
-00006f73   ResetISR
+00004599   C$$EXIT
+00002fff   GPIOPortEIntHandler
+0000468d   ResetISR
 UNDEFED    SHT$$INIT_ARRAY$$Base
 UNDEFED    SHT$$INIT_ARRAY$$Limit
-00003fd9   SysTickIntHandler
-00003aed   UARTEchoSet
-00003a85   UARTFlushRx
-00003aaf   UARTFlushTx
-00003a2b   UARTPeek
-00003a09   UARTRxBytesAvail
-00003493   UARTStdioConfig
-0000354b   UARTStdioInit
-00003565   UARTStdioInitExpClk
-00003b19   UARTStdioIntHandler
-00003a17   UARTTxBytesFree
-000036a1   UARTgetc
-00003625   UARTgets
-00003709   UARTprintf
-0000357f   UARTwrite
-00006f43   _Dclass
-00006d71   _Dtest
-20000a44   __CIOBUF_
-20001b78   __STACK_END
+00002fd7   SysTickIntHandler
+00002c61   UARTEchoSet
+00002bf9   UARTFlushRx
+00002c23   UARTFlushTx
+00002b9f   UARTPeek
+00002b7d   UARTRxBytesAvail
+00002607   UARTStdioConfig
+000026bf   UARTStdioInit
+000026d9   UARTStdioInitExpClk
+00002c8d   UARTStdioIntHandler
+00002b8b   UARTTxBytesFree
+00002815   UARTgetc
+00002799   UARTgets
+0000287d   UARTprintf
+000026f3   UARTwrite
+200015e8   __STACK_END
 00000200   __STACK_SIZE
-20001a78   __STACK_TOP
+200014e8   __STACK_TOP
 000007d0   __SYSMEM_SIZE
-00007178   __TI_CINIT_Base
-00007188   __TI_CINIT_Limit
-00007160   __TI_Handler_Table_Base
-0000716c   __TI_Handler_Table_Limit
+00004728   __TI_CINIT_Base
+00004738   __TI_CINIT_Limit
+00004714   __TI_Handler_Table_Base
+00004720   __TI_Handler_Table_Limit
 00000001   __TI_args_main
-000067c1   __TI_auto_init
-00005d95   __TI_cleanup
-2000195c   __TI_cleanup_ptr
-00006729   __TI_closefile
-00006f65   __TI_decompress_none
-00006f7f   __TI_decompress_rle24
-00006485   __TI_doflush
-20001960   __TI_dtors_ptr
-20001938   __TI_ft_end
-000026f3   __TI_printfi
-000065a7   __TI_rd_ok
-00006acb   __TI_readmsg
+00004349   __TI_auto_init
+20001608   __TI_cleanup_ptr
+0000467f   __TI_decompress_none
+00004699   __TI_decompress_rle24
+2000160c   __TI_dtors_ptr
 00000000   __TI_static_base__
-20000c64   __TI_tmpnams
-00006a9d   __TI_writemsg
-00006545   __TI_wrt_ok
-00006f31   __TI_zero_init
-00006855   __aeabi_cdcmpeq
-00006855   __aeabi_cdcmple
-000068d3   __aeabi_cdrcmple
-00006ca1   __aeabi_d2iz
-00005e97   __aeabi_dadd
-00006043   __aeabi_ddiv
-000062ad   __aeabi_dmul
-00005e8d   __aeabi_dsub
-00006e27   __aeabi_i2d
-00006ead   __aeabi_lmul
-00006951   __aeabi_memclr
-00006951   __aeabi_memclr4
-00006951   __aeabi_memclr8
-0000668d   __aeabi_memcpy
-0000668d   __aeabi_memcpy4
-0000668d   __aeabi_memcpy8
-00006953   __aeabi_memset
-00006953   __aeabi_memset4
-00006953   __aeabi_memset8
-20001944   __aeabi_stderr
-2000193c   __aeabi_stdin
-20001940   __aeabi_stdout
-00006db5   __aeabi_uidivmod
-00005ad9   __aeabi_uldivmod
+0000466d   __TI_zero_init
+000043dd   __aeabi_memclr
+000043dd   __aeabi_memclr4
+000043dd   __aeabi_memclr8
+000042ad   __aeabi_memcpy
+000042ad   __aeabi_memcpy4
+000042ad   __aeabi_memcpy8
+000043df   __aeabi_memset
+000043df   __aeabi_memset4
+000043df   __aeabi_memset8
+000045dd   __aeabi_uidivmod
 ffffffff   __binit__
 ffffffff   __c_args__
-20001978   __stack
-00006e95   _args_main
-00006c59   _c_int00
-00006f84   _ctypes_
-20001760   _ftable
-20001954   _lock
-00006f17   _nop
-00006f0f   _register_lock
-00006f09   _register_unlock
-20000f90   _sys_memory
-20001958   _unlock
-00006d31   abort
-00005757   add_device
-00006c0d   atoi
+200013e8   __stack
+00004641   _args_main
+0000450d   _c_int00
+20001600   _lock
+00004667   _nop
+0000465f   _register_lock
+00004659   _register_unlock
+20000c18   _sys_memory
+20001604   _unlock
+0000459d   abort
 ffffffff   binit
-00005115   calloc
-00003ffb   clock_time
-00005705   close
-00006ce9   copy_in
-0000486b   dhcpc_appcall
-00003f75   dhcpc_configured
-0000481d   dhcpc_init
-00004881   dhcpc_request
-00003215   enc_action
-00002f3f   enc_get_mac_addr
-00002f91   enc_init
-00002e1f   enc_phy_write
-00002a15   enc_reset
-00003245   enc_send_packet
-00006d39   exit
-0000678f   fclose
-000064d1   fflush
-00005deb   fopen
-000065f1   fputc
-00006179   fputs
-00004e6f   free
-00005dc1   freopen
-00006a39   fseek
+200008ec   buf
+00002ff9   clock_time
+00004555   copy_in
+00003a0f   dhcpc_appcall
+00002f7d   dhcpc_configured
+000039c1   dhcpc_init
+00003a25   dhcpc_request
+00002389   enc_action
+000020b3   enc_get_mac_addr
+00002105   enc_init
+00001f93   enc_phy_write
+00001b89   enc_reset
+000023b9   enc_send_packet
+20000bb4   error
+000045a5   exit
 00000000   g_pfnVectors
-2000196c   g_ulTickCounter
+20001618   g_ulTickCounter
 00001a85   htons
-000056e1   lseek
-00006b5b   ltoa
-000070dc   mac_addr
-00003ca5   main
-20001974   main_func_sp
-00004e0d   malloc
-00005035   memalign
-00006e77   memccpy
-00006edd   memchr
-00006e55   memcmp
-0000668d   memcpy
-00006959   memset
-00004d81   minit
-0000514d   mobdusd_init
-20000d84   modRegisters
-00005159   modbusd_appcall
-00005633   open
-000069d1   printf
-00006675   putc
-00006679   putchar
-00006285   puts
-0000560f   read
-00004f2f   realloc
-00005585   remove
-000055e7   remove_device
-000055a9   rename
-20000f24   request
-000063a9   setvbuf
-000042cd   spi_mem_read
-0000424d   spi_mem_write
-00003f2d   spi_send
-00006ef3   strchr
-00006ec5   strcmp
-00006f55   strcpy
-00006f1d   strlen
-00006df7   strncpy
-00006bef   timer_expired
-00006bcb   timer_reset
-00006be1   timer_restart
-00006bb5   timer_set
-20000f58   uip_acc32
+20000bc8   lARPTimer
+20000bcc   lPeriodicTimer
+000046f4   mac_addr
+00002e19   main
+2000161c   main_func_sp
+0000461f   memcmp
+000042ad   memcpy
+000043e5   memset
+00003f25   mobdusd_init
+20000a04   modRegisters
+00003f31   modbusd_appcall
+20000bd0   rResponse
+20000bd4   request
+20000bd8   request23
+00003251   spi_mem_read
+000031c9   spi_mem_write
+00002f53   spi_send
+0000332d   startup
+000044ed   timer_expired
+000044c9   timer_reset
+000044df   timer_restart
+000044b3   timer_set
+20000bdc   uip_acc32
 00000281   uip_add32
-20000f5c   uip_appdata
-00004aa1   uip_arp_arpin
-000048dd   uip_arp_init
-00004b8d   uip_arp_out
-00004915   uip_arp_timer
-20000000   uip_buf
+20000be0   uip_appdata
+00003c45   uip_arp_arpin
+00003a81   uip_arp_init
+00003d31   uip_arp_out
+00003ab9   uip_arp_timer
+20000400   uip_buf
 000003bf   uip_chksum
-20000f60   uip_conn
+20000be4   uip_conn
 0000050d   uip_connect
-20000e64   uip_conns
-20000f64   uip_draddr
-20001964   uip_ethaddr
-20000f8a   uip_flags
-20000f68   uip_hostaddr
+20000ae4   uip_conns
+20000be8   uip_draddr
+20001610   uip_ethaddr
+20000c12   uip_flags
+20000bec   uip_hostaddr
 0000046b   uip_init
 000003d9   uip_ipchksum
-20000f7e   uip_len
+20000c06   uip_len
 00000751   uip_listen
-20000f38   uip_listenports
-00004361   uip_log
-20000f6c   uip_netmask
+20000ba4   uip_listenports
+000032d5   uip_log
+20000bf0   uip_netmask
 0000080d   uip_process
-20000f70   uip_sappdata
+20000bf4   uip_sappdata
 00001aa1   uip_send
 0000026d   uip_setipid
-20000f80   uip_slen
-20000ef0   uip_stat
+20000c08   uip_slen
+20000b70   uip_stat
 00000461   uip_tcpchksum
-20000f74   uip_udp_conn
-20000b64   uip_udp_conns
+20000bf8   uip_udp_conn
+200007ec   uip_udp_conns
 00000621   uip_udp_new
 000006f9   uip_unlisten
-00005585   unlink
-000054f5   write
+20000bfc   wResponse
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -429,190 +323,121 @@ address    name
 0000080d   uip_process
 00001a85   htons
 00001aa1   uip_send
-000026f3   __TI_printfi
-00002a15   enc_reset
-00002e1f   enc_phy_write
-00002f3f   enc_get_mac_addr
-00002f91   enc_init
-00003215   enc_action
-00003245   enc_send_packet
-00003493   UARTStdioConfig
-0000354b   UARTStdioInit
-00003565   UARTStdioInitExpClk
-0000357f   UARTwrite
-00003625   UARTgets
-000036a1   UARTgetc
-00003709   UARTprintf
-00003a09   UARTRxBytesAvail
-00003a17   UARTTxBytesFree
-00003a2b   UARTPeek
-00003a85   UARTFlushRx
-00003aaf   UARTFlushTx
-00003aed   UARTEchoSet
-00003b19   UARTStdioIntHandler
-00003ca5   main
-00003f2d   spi_send
-00003f75   dhcpc_configured
-00003fd9   SysTickIntHandler
-00003ffb   clock_time
-0000404d   GPIOPortEIntHandler
-0000424d   spi_mem_write
-000042cd   spi_mem_read
-00004361   uip_log
-0000481d   dhcpc_init
-0000486b   dhcpc_appcall
-00004881   dhcpc_request
-000048dd   uip_arp_init
-00004915   uip_arp_timer
-00004aa1   uip_arp_arpin
-00004b8d   uip_arp_out
-00004d81   minit
-00004e0d   malloc
-00004e6f   free
-00004f2f   realloc
-00005035   memalign
-00005115   calloc
-0000514d   mobdusd_init
-00005159   modbusd_appcall
-000054f5   write
-00005585   remove
-00005585   unlink
-000055a9   rename
-000055e7   remove_device
-0000560f   read
-00005633   open
-000056e1   lseek
-00005705   close
-00005757   add_device
-00005805   HOSTwrite
-00005851   HOSTunlink
-00005889   HOSTtime
-000058c3   HOSTrename
-00005921   HOSTread
-0000596d   HOSTopen
-000059bf   HOSTlseek
-00005a1b   HOSTgetenv
-00005a59   HOSTclose
-00005a91   HOSTclock
-00005ad9   __aeabi_uldivmod
-00005d95   __TI_cleanup
-00005dc1   freopen
-00005deb   fopen
-00005e8d   __aeabi_dsub
-00005e97   __aeabi_dadd
-00006043   __aeabi_ddiv
-00006179   fputs
-00006285   puts
-000062ad   __aeabi_dmul
-000063a9   setvbuf
-00006485   __TI_doflush
-000064d1   fflush
-00006545   __TI_wrt_ok
-000065a7   __TI_rd_ok
-000065f1   fputc
-00006675   putc
-00006679   putchar
-0000668d   __aeabi_memcpy
-0000668d   __aeabi_memcpy4
-0000668d   __aeabi_memcpy8
-0000668d   memcpy
-00006729   __TI_closefile
-0000678f   fclose
-000067c1   __TI_auto_init
-00006855   __aeabi_cdcmpeq
-00006855   __aeabi_cdcmple
-000068d3   __aeabi_cdrcmple
-00006951   __aeabi_memclr
-00006951   __aeabi_memclr4
-00006951   __aeabi_memclr8
-00006953   __aeabi_memset
-00006953   __aeabi_memset4
-00006953   __aeabi_memset8
-00006959   memset
-000069d1   printf
-00006a39   fseek
-00006a9d   __TI_writemsg
-00006ac7   C$$IO$$
-00006acb   __TI_readmsg
-00006b5b   ltoa
-00006bb5   timer_set
-00006bcb   timer_reset
-00006be1   timer_restart
-00006bef   timer_expired
-00006c0d   atoi
-00006c59   _c_int00
-00006ca1   __aeabi_d2iz
-00006ce9   copy_in
-00006d2d   C$$EXIT
-00006d31   abort
-00006d39   exit
-00006d71   _Dtest
-00006db5   __aeabi_uidivmod
-00006df7   strncpy
-00006e27   __aeabi_i2d
-00006e55   memcmp
-00006e77   memccpy
-00006e95   _args_main
-00006ead   __aeabi_lmul
-00006ec5   strcmp
-00006edd   memchr
-00006ef3   strchr
-00006f09   _register_unlock
-00006f0f   _register_lock
-00006f17   _nop
-00006f1d   strlen
-00006f31   __TI_zero_init
-00006f43   _Dclass
-00006f55   strcpy
-00006f65   __TI_decompress_none
-00006f73   ResetISR
-00006f7f   __TI_decompress_rle24
-00006f84   _ctypes_
-000070dc   mac_addr
-00007160   __TI_Handler_Table_Base
-0000716c   __TI_Handler_Table_Limit
-00007178   __TI_CINIT_Base
-00007188   __TI_CINIT_Limit
-20000000   uip_buf
-20000a44   __CIOBUF_
-20000b64   uip_udp_conns
-20000c64   __TI_tmpnams
-20000d84   modRegisters
-20000e64   uip_conns
-20000ef0   uip_stat
-20000f24   request
-20000f38   uip_listenports
-20000f58   uip_acc32
-20000f5c   uip_appdata
-20000f60   uip_conn
-20000f64   uip_draddr
-20000f68   uip_hostaddr
-20000f6c   uip_netmask
-20000f70   uip_sappdata
-20000f74   uip_udp_conn
-20000f7e   uip_len
-20000f80   uip_slen
-20000f8a   uip_flags
-20000f90   _sys_memory
-20001760   _ftable
-20001938   __TI_ft_end
-2000193c   __aeabi_stdin
-20001940   __aeabi_stdout
-20001944   __aeabi_stderr
-20001954   _lock
-20001958   _unlock
-2000195c   __TI_cleanup_ptr
-20001960   __TI_dtors_ptr
-20001964   uip_ethaddr
-2000196c   g_ulTickCounter
-20001974   main_func_sp
-20001978   __stack
-20001a78   __STACK_TOP
-20001b78   __STACK_END
+00001b89   enc_reset
+00001f93   enc_phy_write
+000020b3   enc_get_mac_addr
+00002105   enc_init
+00002389   enc_action
+000023b9   enc_send_packet
+00002607   UARTStdioConfig
+000026bf   UARTStdioInit
+000026d9   UARTStdioInitExpClk
+000026f3   UARTwrite
+00002799   UARTgets
+00002815   UARTgetc
+0000287d   UARTprintf
+00002b7d   UARTRxBytesAvail
+00002b8b   UARTTxBytesFree
+00002b9f   UARTPeek
+00002bf9   UARTFlushRx
+00002c23   UARTFlushTx
+00002c61   UARTEchoSet
+00002c8d   UARTStdioIntHandler
+00002e19   main
+00002f53   spi_send
+00002f7d   dhcpc_configured
+00002fd7   SysTickIntHandler
+00002ff9   clock_time
+00002fff   GPIOPortEIntHandler
+000031c9   spi_mem_write
+00003251   spi_mem_read
+000032d5   uip_log
+0000332d   startup
+000039c1   dhcpc_init
+00003a0f   dhcpc_appcall
+00003a25   dhcpc_request
+00003a81   uip_arp_init
+00003ab9   uip_arp_timer
+00003c45   uip_arp_arpin
+00003d31   uip_arp_out
+00003f25   mobdusd_init
+00003f31   modbusd_appcall
+000042ad   __aeabi_memcpy
+000042ad   __aeabi_memcpy4
+000042ad   __aeabi_memcpy8
+000042ad   memcpy
+00004349   __TI_auto_init
+000043dd   __aeabi_memclr
+000043dd   __aeabi_memclr4
+000043dd   __aeabi_memclr8
+000043df   __aeabi_memset
+000043df   __aeabi_memset4
+000043df   __aeabi_memset8
+000043e5   memset
+000044b3   timer_set
+000044c9   timer_reset
+000044df   timer_restart
+000044ed   timer_expired
+0000450d   _c_int00
+00004555   copy_in
+00004599   C$$EXIT
+0000459d   abort
+000045a5   exit
+000045dd   __aeabi_uidivmod
+0000461f   memcmp
+00004641   _args_main
+00004659   _register_unlock
+0000465f   _register_lock
+00004667   _nop
+0000466d   __TI_zero_init
+0000467f   __TI_decompress_none
+0000468d   ResetISR
+00004699   __TI_decompress_rle24
+000046f4   mac_addr
+00004714   __TI_Handler_Table_Base
+00004720   __TI_Handler_Table_Limit
+00004728   __TI_CINIT_Base
+00004738   __TI_CINIT_Limit
+20000400   uip_buf
+200007ec   uip_udp_conns
+200008ec   buf
+20000a04   modRegisters
+20000ae4   uip_conns
+20000b70   uip_stat
+20000ba4   uip_listenports
+20000bb4   error
+20000bc8   lARPTimer
+20000bcc   lPeriodicTimer
+20000bd0   rResponse
+20000bd4   request
+20000bd8   request23
+20000bdc   uip_acc32
+20000be0   uip_appdata
+20000be4   uip_conn
+20000be8   uip_draddr
+20000bec   uip_hostaddr
+20000bf0   uip_netmask
+20000bf4   uip_sappdata
+20000bf8   uip_udp_conn
+20000bfc   wResponse
+20000c06   uip_len
+20000c08   uip_slen
+20000c12   uip_flags
+20000c18   _sys_memory
+200013e8   __stack
+200014e8   __STACK_TOP
+200015e8   __STACK_END
+20001600   _lock
+20001604   _unlock
+20001608   __TI_cleanup_ptr
+2000160c   __TI_dtors_ptr
+20001610   uip_ethaddr
+20001618   g_ulTickCounter
+2000161c   main_func_sp
 ffffffff   __binit__
 ffffffff   __c_args__
 ffffffff   binit
 UNDEFED    SHT$$INIT_ARRAY$$Base
 UNDEFED    SHT$$INIT_ARRAY$$Limit
 
-[203 symbols]
+[134 symbols]

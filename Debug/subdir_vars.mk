@@ -8,42 +8,36 @@ CMD_SRCS += \
 
 C_SRCS += \
 ../enc28j60.c \
-../httpd.c \
 ../main.c \
 ../modbusd.c \
 ../startup_ccs.c 
 
 OBJS += \
 ./enc28j60.obj \
-./httpd.obj \
 ./main.obj \
 ./modbusd.obj \
 ./startup_ccs.obj 
 
 C_DEPS += \
 ./enc28j60.pp \
-./httpd.pp \
 ./main.pp \
 ./modbusd.pp \
 ./startup_ccs.pp 
 
 C_DEPS__QUOTED += \
 "enc28j60.pp" \
-"httpd.pp" \
 "main.pp" \
 "modbusd.pp" \
 "startup_ccs.pp" 
 
 OBJS__QUOTED += \
 "enc28j60.obj" \
-"httpd.obj" \
 "main.obj" \
 "modbusd.obj" \
 "startup_ccs.obj" 
 
 C_SRCS__QUOTED += \
 "../enc28j60.c" \
-"../httpd.c" \
 "../main.c" \
 "../modbusd.c" \
 "../startup_ccs.c" 

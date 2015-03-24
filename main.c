@@ -163,7 +163,7 @@ static void cpu_init(void) {
 
   // Setup for 16MHZ external crystal, use 200MHz PLL and divide by 3 = 66MHz
   //SYSCTL_SYSDIV_2_5 for 80mhz
-  MAP_SysCtlClockSet(SYSCTL_SYSDIV_3 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN |
+  MAP_SysCtlClockSet(SYSCTL_SYSDIV_2_5 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN |
       SYSCTL_XTAL_16MHZ);
 }
 
@@ -188,7 +188,7 @@ static void spi_init(void) {
   MAP_GPIOPinTypeSSI(GPIO_PORTA_BASE, GPIO_PIN_2 | GPIO_PIN_4 | GPIO_PIN_5);
   MAP_GPIOPinTypeGPIOOutput(GPIO_PORTA_BASE,GPIO_PIN_3);
   MAP_SSIConfigSetExpClk(SSI0_BASE, MAP_SysCtlClockGet(), SSI_FRF_MOTO_MODE_0,
-			 SSI_MODE_MASTER, 1000000, 8);
+			 SSI_MODE_MASTER, 20000000, 8);
   MAP_SSIEnable(SSI0_BASE);
 
   unsigned long b;
@@ -235,7 +235,7 @@ void startup()
 	  printf("Welcome\n");
 	  spi_init();
 	  enc28j60_comm_init();
-	  printf("Welcome\n");
+	  //printf("Welcome\n");
 
 	  enc_init(mac_addr);
 

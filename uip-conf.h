@@ -89,7 +89,7 @@ typedef unsigned short uip_stats_t;
 //
 // uIP buffer size.
 //
-#define UIP_CONF_BUFFER_SIZE        1600
+#define UIP_CONF_BUFFER_SIZE        1000//1600
 
 //
 // uIP buffer is defined in the application.

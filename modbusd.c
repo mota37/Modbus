@@ -54,6 +54,7 @@ struct MODBUS_HEADER_MSG23{
 }*request23;
 
 #define DATA_BUF ((uint8_t*)(uip_appdata))//Stores the request
+uint8_t buf[150];//Stores the outgoing response
 
 void mobdusd_init(void) {
   uip_listen(HTONS(502));
@@ -66,29 +67,31 @@ void modbusd_appcall(void) {
     return;
   }
 
-  //2.
+  if(uip_closed()){
+	  uip_close();
+	  return;
+  }
+
+  //2.Get the uip_conn for this connection
   struct modd_state *hs = (struct modd_state *)&(uip_conn->appstate);
-  uint8_t buf[150];//Stores the outgoing response
 
   //3a If newly connected
-  //keep
   if(uip_connected()) {
-    printf("Connected\n");
+    //printf("Connected\n");
     hs->data_count = 0;
     hs->idle_count = 0;
     hs->state = 0;
     hs->done = false;
+
 	//3b Packet received
   } else if(uip_newdata()) {
-    printf("New data\n");
-
-	//Copy request header
+    //printf("New data\n");
+	//Setup the outgoing message. These all point to the same location.
+	//The structures are used to simplify programming.
     request = (struct MODBUS_HEADER_MSG*)DATA_BUF;
     wResponse = (struct MODBUS_HEADER_MSG*)buf;
     rResponse = (struct MODBUS_HEADER_RD*)buf;
     error = (struct MODBUS_HEADER_ERR*)buf;
-	//memcpy(buf,DATA_BUF,12);//Get all data just in case
-    printf("Got new request\n");
 
 	//Parse modbus header here
 	unsigned short offset,size,wOffset,wSize;
@@ -98,7 +101,7 @@ void modbusd_appcall(void) {
 
   switch(request->fcnID){
 	case 3://Read multiple registers TESTED works
-		printf("3\n");
+		//printf("3\n");
 		if(size + offset > REG_COUNT){//Send error here
 			error->error = 0x83;
 			error->errorID = 2;
@@ -112,7 +115,7 @@ void modbusd_appcall(void) {
 		}
 		break;
 	case 6://Write single register UNTESTED Probably works
-		printf("6\n");
+		//printf("6\n");
 		if(offset > REG_COUNT){
 			error->error = 0x86;
 			error->errorID = 2;
@@ -124,7 +127,7 @@ void modbusd_appcall(void) {
 		}
 		break;
 	case 16://Write multiple registers TESTED WORKS
-		printf("16\n");
+		//printf("16\n");
 		if(size + offset > REG_COUNT){
 			error->error = 0x90;
 			error->errorID = 2;
@@ -137,7 +140,7 @@ void modbusd_appcall(void) {
 		}
 		break;
 	case 23://Read and write UNTESTED
-		printf("23\n");
+		//printf("23\n");
 		request23 = (struct MODBUS_HEADER_MSG23*)DATA_BUF;
 		wSize = HTONS(request23->writeSize)*2;
 		wOffset = HTONS(request23->writeOffset)*2;
@@ -164,21 +167,22 @@ void modbusd_appcall(void) {
 
 	hs->xmit_buf = buf;
 	uip_send(hs->xmit_buf, hs->xmit_buf_size);
+	hs->idle_count = 0;//Clear idle count
 	hs->done = true;
 	
-  }else if( uip_acked()){//3c Got response acknowledge
+  }else if(uip_acked()){//3c Got response acknowledge
     hs->data_count++;
 
   }else if( uip_poll()){//3d Poll to keep connection live
-    printf("Poll\n");
+    //printf("Poll\n");
     hs->idle_count++;
-    if( hs->idle_count > 1000 ) {//Maybe not keep this.  Connection shouldn't close
+    if( hs->idle_count > 10 ) {//If no traffic after 5 seconds close this connection
       uip_close();
     }
   }//end of part 3
 
-  //4 Send the response here resend if the last packet failed
-  if( uip_rexmit()) {
+  //4 Resend if last send failed
+  if(uip_rexmit()) {
 	uip_send(buf, hs->xmit_buf_size);	
-  }//if( uip_rexmit())
+  }//if(uip_rexmit())
 }
