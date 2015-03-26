@@ -1,7 +1,7 @@
-This is currently a rather messy example for the Stellaris ENC28J60 booster packet.
+This is a MODBUS TCP server for the TI Stellaris/Tiva microprocessor. 
 
-At startup DHCP is used to acquire an IPv4 address. After that a small web-page is served on port 80.
+This is designed to use the Microchip enc28j60 ethernet interface.
 
-In order to build this code, a working arm-none-eabi-gcc installation is required as well as the StellarisWare
-driver library.
-Before buidling, please modify "toolchainsettings" accordingly.
+By default it will use DHCP.  This can be changed to static IP. 
+
+This is based off code originally taken from https://github.com/xpgdk/stellaris-enc28j60-booster 
