@@ -377,10 +377,7 @@ void enc_init(const uint8_t *mac) {
 
 	/* Setup receive filter to receive
 	 * broadcast, multicast and unicast to the given MAC */
-#if 0
-	printf("Setting MAC: %x:%x:%x:%x:%x:%x\n", mac[0], mac[1], mac[2],
-	       mac[3], mac[4], mac[5]);
-#endif
+
 	enc_set_mac_addr(mac);
 	WRITE_REG(
 		  ENC_ERXFCON,
@@ -407,12 +404,6 @@ void enc_init(const uint8_t *mac) {
 	CLEAR_REG_BITS(ENC_ECON1, ENC_ECON1_TXRST | ENC_ECON1_RXRST);
 	SET_REG_BITS(ENC_ECON1, ENC_ECON1_RXEN);
 
-#if 0
-	uint8_t mc[6] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-	enc_get_mac_addr(mc);
-	printf("Mac addr set to: %x:%x:%x:%x:%x:%x\n", mc[0], mc[1], mc[2],
-	       mc[3], mc[4], mc[5]);
-#endif
 }
 
 /**
@@ -495,17 +486,6 @@ void enc_send_packet(const uint8_t *buf, uint16_t count) {
   WRITE_REG(ENC_EWRPTL, TX_START & 0xFF);
   WRITE_REG(ENC_EWRPTH, TX_START >> 8);
 
-#if 0
-  printf("dest: %X:%X:%X:%X:%X:%X\n", BUF->dest.addr[0], BUF->dest.addr[1],
-	 BUF->dest.addr[2],  BUF->dest.addr[3], BUF->dest.addr[4],
-	 BUF->dest.addr[5]);
-  printf("src : %X:%X:%X:%X:%X:%X\n", BUF->src.addr[0], BUF->src.addr[1],
-	 BUF->src.addr[2], BUF->src.addr[3], BUF->src.addr[4],
-	 BUF->src.addr[5]);
-
-  printf("Type: %X\n", htons(BUF->type));
-#endif
-
   uint8_t control = 0x00;
   enc_wbm(&control, 1);
 
@@ -522,12 +502,14 @@ void enc_send_packet(const uint8_t *buf, uint16_t count) {
   CLEAR_REG_BITS(ENC_EIR, ENC_EIR_TXIF);
   SET_REG_BITS(ENC_ECON1, ENC_ECON1_TXRTS);
 
-  /* Busy wait for the transmission to complete */
+  /* Busy wait for the transmission to complete
   while (true) {
     uint8_t r = READ_REG(ENC_ECON1);
-    if ((r & ENC_ECON1_TXRTS) == 0)
-      break;
-  }
+    if ((r & ENC_ECON1_TXRTS) == 0) break;
+  }*/
+
+  //block until transmission completes to prevent starting new send
+  while(READ_REG(ENC_ECON1) & ENC_ECON1_TXRTS);
 
   /* Read status bits */
   uint8_t status[7];
@@ -536,10 +518,10 @@ void enc_send_packet(const uint8_t *buf, uint16_t count) {
   WRITE_REG(ENC_ERDPTH, tx_end >> 8);
   enc_rbm(status, 7);
 
-  uint16_t transmit_count = status[0] | (status[1] << 8);
+  //uint16_t transmit_count = status[0] | (status[1] << 8);
 
-  if (status[2] & 0x80) {
-    /* Transmit OK*/
-    //    printf("Transmit OK\n");
-  }
+  /*if (status[2] & 0x80) {
+    //Transmit OK
+    //printf("Transmit OK\n");
+  }*/
 }

@@ -39,6 +39,9 @@ main.obj: ../enc28j60.h
 main.obj: ../spi.h
 main.obj: C:/StellarisWare/driverlib/systick.h
 main.obj: C:/StellarisWare/driverlib/interrupt.h
+main.obj: ../IOControl.h
+main.obj: C:/StellarisWare/driverlib/debug.h
+main.obj: C:/StellarisWare/driverlib/timer.h
 
 ../main.c: 
 ../include_file.h: 
@@ -79,3 +82,6 @@ C:/Users/Ben/Documents/workspace/enc28j60-booster-example/uip-1.0/uip/uip_arp.h:
 ../spi.h: 
 C:/StellarisWare/driverlib/systick.h: 
 C:/StellarisWare/driverlib/interrupt.h: 
+../IOControl.h: 
+C:/StellarisWare/driverlib/debug.h: 
+C:/StellarisWare/driverlib/timer.h: 

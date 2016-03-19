@@ -64,7 +64,7 @@ typedef unsigned short uip_stats_t;
 //
 // UDP Maximum Connections
 //
-#define UIP_CONF_UDP_CONNS          4
+#define UIP_CONF_UDP_CONNS          1
 
 //
 // Maximum number of TCP connections.
@@ -104,7 +104,7 @@ typedef unsigned short uip_stats_t;
 //
 // Logging on or off
 //
-#define UIP_CONF_LOGGING            1
+#define UIP_CONF_LOGGING            0
 
 //
 // Broadcast Support
@@ -125,7 +125,6 @@ typedef unsigned short uip_stats_t;
 // Here we include the header file for the application we are using in
 // this example
 //
-//#include "httpd.h"
 #include "modbusd.h"
 //
 // Define the uIP Application State type, based on the httpd.h state variable.
@@ -139,7 +138,6 @@ typedef struct modd_state uip_tcp_appstate_t;
 // appfunc(void)").
 //
 #ifndef UIP_APPCALL
-//#define UIP_APPCALL     httpd_appcall
 #define UIP_APPCALL     modbusd_appcall
 #endif
 

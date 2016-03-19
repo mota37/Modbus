@@ -48,10 +48,17 @@ long lPeriodicTimer, lARPTimer;
 int main(void) {
   //char buf[100];//not sure what this is for
   startup();
+  setupIO();
+  //timerSetup();
 
   while(true) {
+	SET_RUN_ON
 
-    MAP_SysCtlSleep();
+	write8Bits(0x00,modRegisters[0]);
+	write8Bits(0x01,modRegisters[1]);
+	write8Bits(0x02,modRegisters[2]);
+	write8Bits(0x03,modRegisters[3]);
+    //MAP_SysCtlSleep();
     /************** Important! ***************
      * This is where you program goes.
      * Remove the MAP_SysCtlSleep()

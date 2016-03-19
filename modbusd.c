@@ -54,7 +54,6 @@ struct MODBUS_HEADER_MSG23{
 }*request23;
 
 #define DATA_BUF ((uint8_t*)(uip_appdata))//Stores the request
-uint8_t buf[150];//Stores the outgoing response
 
 void mobdusd_init(void) {
   uip_listen(HTONS(502));
@@ -89,13 +88,13 @@ void modbusd_appcall(void) {
 	//Setup the outgoing message. These all point to the same location.
 	//The structures are used to simplify programming.
     request = (struct MODBUS_HEADER_MSG*)DATA_BUF;
-    wResponse = (struct MODBUS_HEADER_MSG*)buf;
-    rResponse = (struct MODBUS_HEADER_RD*)buf;
-    error = (struct MODBUS_HEADER_ERR*)buf;
+    wResponse = (struct MODBUS_HEADER_MSG*)hs->xmit_buf;
+    rResponse = (struct MODBUS_HEADER_RD*)hs->xmit_buf;
+    error = (struct MODBUS_HEADER_ERR*)hs->xmit_buf;
 
 	//Parse modbus header here
 	unsigned short offset,size,wOffset,wSize;
-	memcpy(buf,DATA_BUF,12);//Copy the header to the out buffer.
+	memcpy(hs->xmit_buf,DATA_BUF,12);//Copy the header to the out buffer.
 	offset = HTONS(request->offset)*2;//NTOHS(request.fields.offset)*2;
 	size = HTONS(request->size)*2;//NTOHS(request.fields.size)*2;
 
@@ -165,7 +164,6 @@ void modbusd_appcall(void) {
 		hs->xmit_buf_size = 10;
 	}//Switch
 
-	hs->xmit_buf = buf;
 	uip_send(hs->xmit_buf, hs->xmit_buf_size);
 	hs->idle_count = 0;//Clear idle count
 	hs->done = true;
@@ -176,13 +174,13 @@ void modbusd_appcall(void) {
   }else if( uip_poll()){//3d Poll to keep connection live
     //printf("Poll\n");
     hs->idle_count++;
-    if( hs->idle_count > 10 ) {//If no traffic after 5 seconds close this connection
+    if( hs->idle_count > 10 ) {//If no traffic after ~5 seconds close this connection
       uip_close();
     }
   }//end of part 3
 
   //4 Resend if last send failed
   if(uip_rexmit()) {
-	uip_send(buf, hs->xmit_buf_size);	
+	uip_send(hs->xmit_buf, hs->xmit_buf_size);
   }//if(uip_rexmit())
 }

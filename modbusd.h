@@ -12,7 +12,7 @@ struct modd_state {
   uint8_t	data_count;
   uint8_t	state;
   uint8_t	request_type;
-  const uint8_t	*xmit_buf;
+  uint8_t	xmit_buf[150];
   uint16_t	xmit_buf_size;
   uint16_t	offset;
   bool		done;

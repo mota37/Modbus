@@ -20,8 +20,6 @@ uip-1.0/uip/uip.obj: C:/Users/Ben/Documents/workspace/enc28j60-booster-example/u
 uip-1.0/uip/uip.obj: C:/Users/Ben/Documents/workspace/enc28j60-booster-example/uip-1.0/uip/lc-switch.h
 uip-1.0/uip/uip.obj: ../uip-1.0/uip/uip_arch.h
 uip-1.0/uip/uip.obj: C:/ti/ccsv5/tools/compiler/arm_5.1.1/include/string.h
-uip-1.0/uip/uip.obj: C:/ti/ccsv5/tools/compiler/arm_5.1.1/include/stdio.h
-uip-1.0/uip/uip.obj: C:/ti/ccsv5/tools/compiler/arm_5.1.1/include/stdarg.h
 
 ../uip-1.0/uip/uip.c: 
 ../uip-1.0/uip/uip.h: 
@@ -43,5 +41,3 @@ C:/Users/Ben/Documents/workspace/enc28j60-booster-example/uip-1.0/uip/lc.h:
 C:/Users/Ben/Documents/workspace/enc28j60-booster-example/uip-1.0/uip/lc-switch.h: 
 ../uip-1.0/uip/uip_arch.h: 
 C:/ti/ccsv5/tools/compiler/arm_5.1.1/include/string.h: 
-C:/ti/ccsv5/tools/compiler/arm_5.1.1/include/stdio.h: 
-C:/ti/ccsv5/tools/compiler/arm_5.1.1/include/stdarg.h: 
