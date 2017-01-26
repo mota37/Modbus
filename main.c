@@ -28,6 +28,8 @@ void uip_log(char *msg);
 
 static void cpu_init(void);
 
+void UART4_HANDLER();
+
 static void uart_init(void);
 
 static void spi_init(void);
@@ -51,6 +53,8 @@ int main(void) {
   setupIO();
   //timerSetup();
 
+  ROM_UARTCharPutNonBlocking(UART4_BASE,'a');
+
   while(true) {
 	SET_RUN_ON
 
@@ -58,6 +62,7 @@ int main(void) {
 	write8Bits(0x01,modRegisters[1]);
 	write8Bits(0x02,modRegisters[2]);
 	write8Bits(0x03,modRegisters[3]);
+	if(ROM_UARTCharsAvail(UART4_BASE)) UART4_HANDLER();
     //MAP_SysCtlSleep();
     /************** Important! ***************
      * This is where you program goes.
@@ -174,14 +179,64 @@ static void cpu_init(void) {
       SYSCTL_XTAL_16MHZ);
 }
 
-static void uart_init(void) {
-  MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+void UART3_HANDLER(){
+    ROM_UARTIntClear(UART3_BASE,ROM_UARTIntStatus(UART3_BASE, true));
+}
 
-  // Configure PD0 and PD1 for UART
+void UART4_HANDLER(){
+	unsigned long intStatus= ROM_UARTIntStatus(UART4_BASE, true);
+    ROM_UARTIntClear(UART4_BASE,intStatus);
+
+    if(intStatus & UART_INT_RX | ROM_UARTCharsAvail(UART4_BASE)){
+    	//receive here
+    	 while(ROM_UARTCharsAvail(UART4_BASE))
+    	    {
+    	        ROM_UARTCharPutNonBlocking(UART4_BASE,
+    	                                   ROM_UARTCharGetNonBlocking(UART4_BASE));
+    	    }
+    }else if (intStatus & UART_INT_TX){
+    	//TX more
+    }
+}
+
+static void uart_init(void) {
+  // Configure PD0 and PD1 for UART0
+  MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
   MAP_GPIOPinConfigure(GPIO_PA0_U0RX);
   MAP_GPIOPinConfigure(GPIO_PA1_U0TX);
   MAP_GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
   UARTStdioInitExpClk(0, 115200);
+
+  MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOC);
+  // Configure PC6 and PC7 for UART3
+  ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_UART3);
+  MAP_GPIOPinConfigure(GPIO_PC6_U3RX);
+  MAP_GPIOPinConfigure(GPIO_PC7_U3TX);
+  MAP_GPIOPinTypeUART(GPIO_PORTC_BASE, GPIO_PIN_6 | GPIO_PIN_7);
+  ROM_UARTConfigSetExpClk(UART3_BASE, ROM_SysCtlClockGet(), 9600,
+                              (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
+                               UART_CONFIG_PAR_NONE));
+  ROM_UARTFIFOEnable(UART3_BASE);
+  ROM_UARTFIFOLevelSet(UART3_BASE,UART_FIFO_TX7_8,UART_FIFO_RX7_8);
+  UARTIntRegister(UART3_BASE,&UART3_HANDLER);
+  ROM_IntEnable(INT_UART3);
+  ROM_UARTIntEnable(UART3_BASE, UART_INT_RX | UART_INT_RT);
+  ROM_UARTEnable(UART3_BASE);
+
+  // Configure PC4 and PC5 for UART4
+  ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_UART4);
+  MAP_GPIOPinConfigure(GPIO_PC4_U4RX);
+  MAP_GPIOPinConfigure(GPIO_PC5_U4TX);
+  MAP_GPIOPinTypeUART(GPIO_PORTC_BASE, GPIO_PIN_4 | GPIO_PIN_5);
+  ROM_UARTConfigSetExpClk(UART4_BASE, ROM_SysCtlClockGet(), 9600,
+                                (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
+                                 UART_CONFIG_PAR_NONE));
+  ROM_UARTFIFOEnable(UART4_BASE);
+  ROM_UARTFIFOLevelSet(UART4_BASE,UART_FIFO_TX7_8,UART_FIFO_RX7_8);
+  UARTIntRegister(UART4_BASE,&UART4_HANDLER);
+  ROM_IntEnable(INT_UART4);
+  ROM_UARTIntEnable(UART4_BASE, UART_INT_RX | UART_INT_RT);
+  ROM_UARTEnable(UART4_BASE);
 }
 
 static void spi_init(void) {

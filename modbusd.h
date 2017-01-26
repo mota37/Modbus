@@ -20,5 +20,6 @@ struct modd_state {
 
 void modbusd_appcall(void);
 void modbusd_init(void);
+void memcpy_hton(int s1,const int s2,int length);
 
 #endif

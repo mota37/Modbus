@@ -107,7 +107,8 @@ void modbusd_appcall(void) {
 			error->length = HTONS(4);
 			hs->xmit_buf_size = 10;
 		}else{//send data
-			memcpy(rResponse->data,&modRegisters[offset],size);
+			//memcpy(rResponse->data,&modRegisters[offset],size);
+			memcpy_hton(rResponse->data,&modRegisters[offset],request->size);
 			rResponse->length = HTONS(3 + size);
 			rResponse->size = size;
 			hs->xmit_buf_size = 9 + size;
@@ -121,7 +122,9 @@ void modbusd_appcall(void) {
 			error->length = HTONS(4);
 			hs->xmit_buf_size = 10;
 		}else{
-			memcpy(&modRegisters[offset],&request->size,2);//data is stored in size heres
+			//memcpy(&modRegisters[offset],&request->size,2);//data is stored in size here
+			//memcpy_hton(&modRegisters[offset],&request->size,2);
+			modRegisters[offset] = HTONS(request->size);
 			hs->xmit_buf_size = 12;
 		}
 		break;
@@ -133,7 +136,8 @@ void modbusd_appcall(void) {
 			error->length = HTONS(4);
 			hs->xmit_buf_size = 10;
 		}else{
-			memcpy(modRegisters+offset,request->data+1, size);//Byte count is data[0]
+			//memcpy(modRegisters+offset,request->data+1, size);//Byte count is data[0]
+			memcpy_hton(modRegisters+offset,request->data+1, request->size);
 			wResponse->length = HTONS(6);
 			hs->xmit_buf_size = 12;
 		}
@@ -183,4 +187,14 @@ void modbusd_appcall(void) {
   if(uip_rexmit()) {
 	uip_send(hs->xmit_buf, hs->xmit_buf_size);
   }//if(uip_rexmit())
+}
+
+void memcpy_hton(int s1,const int s2,int length)
+{
+	int i;
+	for(i = 0;i < length;i++) {
+		*s1 = HTONS(*s2);
+		s1++;
+		s2++;
+	}
 }
